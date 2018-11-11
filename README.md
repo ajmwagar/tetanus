@@ -11,8 +11,10 @@ A proof-of-concept reverse-shell written in rust.
 
 ## Compiling binary
 
+1. `git clone https://github.com/ajmwagar/tetnus`
+1. `cd tetnus`
 1. Install `cargo`
-2. Change Port and IP values
+2. Change Port and IP values in `src/main.rs`
 3. `cargo build`
 4. retrieve binary from `target/debug/tetnus`
 5. Profit!
