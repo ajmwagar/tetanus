@@ -1,6 +1,15 @@
 # tetnus
 :shell: A proof-of-concept reverse-shell written in rust.
 
+## DISCLAMER
+
+**For educational purposes only!**
+
+**I am not responsible for damage or legal trouble you may incur from using boa.**
+
+**Use at your own risk and only on networks you have permission to access.**
+
+
 ## Features
 
 - ZERO dependinces (other than rust and cargo)
