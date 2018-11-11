@@ -1,5 +1,5 @@
 # tetnus
-A proof-of-concept reverse-shell written in rust.
+:shell: A proof-of-concept reverse-shell written in rust.
 
 ## Features
 
