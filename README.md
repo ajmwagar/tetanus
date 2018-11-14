@@ -12,10 +12,11 @@
 
 ## Features
 
-- ZERO dependinces (other than rust and cargo)
-- Linux Support
-- Single binary
+- ZERO dependencies (other than winApi on windows)
+- MacOS/Linux Support (Windows coming soon)
+- Compiles to machine code.
 - Fast
+- Recursive connecting
 
 
 ## Compiling binary
@@ -53,6 +54,8 @@ enter the port
 - **Windows support**
 - **Code obfuscation**
 - **Color support**
+- **Reboot persitence**
+- **C2 Server (for now see above)
 
 ## Contributing
 
