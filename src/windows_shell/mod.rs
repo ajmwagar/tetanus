@@ -3,6 +3,11 @@ use std::net::TcpStream;
 use std::process::{Command, Stdio};
 use std::*;
 
+
+// https://stackoverflow.com/questions/4993119/redirect-io-of-process-to-windows-socket/5725609#5725609
+
+// https://stackoverflow.com/questions/50067355/what-methods-do-i-need-to-get-stdio-over-a-tcp-or-udp-stream-on-windows
+
 // Windows based imports
 #[cfg(windows)]
 extern crate winapi;

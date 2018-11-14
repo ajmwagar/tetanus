@@ -9,8 +9,8 @@ mod windows_shell;
 fn main() {
 
     // TODO Update dynamically
-    // let ip = String::from("127.0.0.1");
-    let ip = String::from("192.168.254.17");
+    let ip = String::from("127.0.0.1");
+    // let ip = String::from("192.168.254.17");
     let port = String::from("6666");
 
     if cfg!(target_os = "windows"){
