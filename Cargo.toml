@@ -6,14 +6,4 @@ authors = ["Avery Wagar <avery@wagar.cc>"]
 
 [dependencies]
 socket2 = { version = "0.3.8" }
-
-
-
-[target.arm-unknown-linux-gnueabihf]
-linker = "arm-linux-gnueabihf-gcc"
-
-[target.i686-pc-windows-gnu]
-linker = "i686-w64-mingw32-gcc"
-
-[target.x86_64-pc-windows-gnu]
-linker = "x86_64-w64-mingw32-gcc"
+tokio = "*"
